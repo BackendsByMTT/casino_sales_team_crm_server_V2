@@ -18,6 +18,12 @@ const test = async (req, res) => {
     });
 }
 
+const health = async (req, res) => {
+    return res.status(200).json({
+        message: "server is running"
+    });
+}
+
 const register = async (req, res) => {
     try {
         const { userName, email, password, designation, activeStatus } = req.body;
@@ -121,20 +127,20 @@ const getUserDetails = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const { username } = req.params;
-    const userDetails = req.body;
-    const { userName, email, password, designation, activeStatus } = userDetails;
+    const { userName } = req.params;
+    const { email, password, designation, activeStatus } = req.body;
 
-    const hashPassword = await bcrypt.hash(password, 10);
-    const updatedDetails = {
-        userName,
-        email,
-        password: hashPassword,
-        designation,
-        activeStatus
-    }
     try {
-        const updatedUser = await User.findOneAndUpdate({ username }, updatedDetails, { new: true });
+        const hashPassword = await bcrypt.hash(password, 10);
+        const updatedDetails = {
+            userName,
+            email,
+            password: hashPassword,
+            designation,
+            activeStatus
+        }
+
+        const updatedUser = await User.findOneAndUpdate({ userName }, updatedDetails, { new: true });
 
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
@@ -146,6 +152,21 @@ const updateUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    const { userName } = req.params;
+
+    try {
+        const deletedUser = await User.findOneAndDelete({ userName });
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        return res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+}
 
 
-module.exports = { register, login, test, getUsers, getUserDetails, updateUser };
+module.exports = { register, login, test, getUsers, getUserDetails, updateUser, deleteUser, health };
