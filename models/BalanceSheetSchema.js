@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const managerSchema = new mongoose.Schema({
-    employName: {
+const BalanceSheetSchema = new mongoose.Schema({
+    employeeName: {
         type: String,
         required: true
     },
@@ -30,11 +30,11 @@ const managerSchema = new mongoose.Schema({
     }
 );
 
-managerSchema.pre('save', function (next) {
+BalanceSheetSchema.pre('save', function (next) {
     this.totalSalary = this.salary + this.incentive;
     next();
 });
 
-const Manager = mongoose.model('Manager', managerSchema);
+const BalanceSheet = mongoose.model('BalanceSheet', BalanceSheetSchema);
 
-module.exports = Manager;
+module.exports = BalanceSheet;
