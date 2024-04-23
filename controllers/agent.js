@@ -3,6 +3,7 @@ const AgentSchema = require("../models/AgentSchema")
 
 //FreshMessage
 const addFreshMessage = async (req, res) => {
+
     const { date, agentName, systemNumber, accountName, playerId, remarks } = req.body;
     try {
         if (await FreshMessage.findOne({ agentName }))
@@ -74,6 +75,11 @@ const updateFreshMessage = async (req, res) => {
 }
 
 const deleteFreshMessage = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { agentName } = req.params;
 
     try {
@@ -89,8 +95,10 @@ const deleteFreshMessage = async (req, res) => {
     }
 }
 
+
 //first deposit and free to play
 const addAgent = async (req, res) => {
+
     const { name } = req.params;
 
     if (name !== 'firstdeposit' && name !== 'freetoplay')
@@ -134,6 +142,10 @@ const getAgents = async (req, res) => {
 
 const getAgentDetails = async (req, res) => {
     const { name, agentName } = req.params;
+
+    if (name !== 'firstdeposit' && name !== 'freetoplay')
+        return res.status(400).json({ status: false, error: "Invalid Request!" });
+
     try {
         const agentDetails = await AgentSchema.find({ name, agentName });
         if (agentDetails.length === 0) {
@@ -147,8 +159,13 @@ const getAgentDetails = async (req, res) => {
 }
 
 const updateAgent = async (req, res) => {
+
     const { name, agentName } = req.params;
     const { customerName, gameName, amountOfCoins, accountName, date, remarks } = req.body;
+
+    if (name !== 'firstdeposit' && name !== 'freetoplay')
+        return res.status(400).json({ status: false, error: "Invalid Request!" });
+
     try {
 
         const updatedDetails = {
@@ -174,7 +191,15 @@ const updateAgent = async (req, res) => {
 }
 
 const deleteAgent = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { name, agentName } = req.params;
+
+    if (name !== 'firstdeposit' && name !== 'freetoplay')
+        return res.status(400).json({ status: false, error: "Invalid Request!" });
 
     try {
         const deletedAgent = await AgentSchema.findOneAndDelete({ name, agentName });

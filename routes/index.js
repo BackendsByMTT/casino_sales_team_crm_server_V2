@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { register, login, test, getUsers, getUserDetails, updateUser, deleteUser, health } = require("../controllers/user");
 const { addEmployee, getBalanceSheetList, getEmployeeDetails, updateEmployee, deleteEmployee, getCoinSheetList, addToCoinSheet, getCoinDetails, updateCoinDetails, deleteCoinDetails, addFbUser, getFbUsers, getFbUserDetail, updateFbUser, deleteFbUser } = require("../controllers/manager");
-const { verifyTokenAuthLogin } = require("../middleware/AuthLogin")
+const { verifyTokenAuthLogin, verifyDesgination } = require("../middleware/AuthLogin")
 const { addCustomer, getCustomers, getCustomerDetails, updateCustomer, deleteCustomer } = require("../controllers/tl")
 const { addFreshMessage, getFreshMessages, getFreshMessageDetails, updateFreshMessage, deleteFreshMessage, addAgent, getAgents, getAgentDetails, updateAgent, deleteAgent } = require("../controllers/agent")
 
@@ -9,55 +9,55 @@ const { addFreshMessage, getFreshMessages, getFreshMessageDetails, updateFreshMe
 //user
 router.post('/register', register);
 router.post('/login', login);
-router.get('/test', verifyTokenAuthLogin, test);
-router.get('/getUsers', getUsers);
-router.get('/getUserDetail/:userName', getUserDetails);
-router.post('/updateUser/:userName', updateUser);
-router.delete('/deleteUser/:userName', deleteUser);
+// router.get('/test', verifyTokenAuthLogin, test);
+router.get('/getUsers', verifyTokenAuthLogin, getUsers);
+router.get('/getUserDetail/:userName', verifyTokenAuthLogin, getUserDetails);
+router.post('/updateUser/:userName', verifyDesgination, updateUser);
+router.delete('/deleteUser/:userName', verifyDesgination, deleteUser);
 router.get('/', health);
 
 //BalanceSheet
-router.post('/addEmployee', addEmployee);
-router.get('/getBalanceSheetList', getBalanceSheetList);
-router.get('/getEmployeeDetails/:employeeName', getEmployeeDetails);
-router.post('/updateEmployee/:employeeName', updateEmployee);
-router.delete('/deleteEmployee/:employeeName', deleteEmployee);
+router.post('/addEmployee', verifyDesgination, addEmployee);
+router.get('/getBalanceSheetList', verifyDesgination, getBalanceSheetList);
+router.get('/getEmployeeDetails/:employeeName', verifyDesgination, getEmployeeDetails);
+router.post('/updateEmployee/:employeeName', verifyDesgination, updateEmployee);
+router.delete('/deleteEmployee/:employeeName', verifyDesgination, deleteEmployee);
 
 //coinSheet
 
-router.get('/getCoinSheetList', getCoinSheetList);
-router.post('/addToCoinSheet', addToCoinSheet);
-router.get('/getCoinDetails/:initialCoins', getCoinDetails);
-router.post('/updateCoinDetails/:initialCoins', updateCoinDetails);
-router.delete('/deleteCoinDetails/:initialCoins', deleteCoinDetails);
+router.get('/getCoinSheetList', verifyDesgination, getCoinSheetList);
+router.post('/addToCoinSheet', verifyDesgination, addToCoinSheet);
+router.get('/getCoinDetails/:initialCoins', verifyDesgination, getCoinDetails);
+router.post('/updateCoinDetails/:initialCoins', verifyDesgination, updateCoinDetails);
+router.delete('/deleteCoinDetails/:initialCoins', verifyDesgination, deleteCoinDetails);
 
 //fbAccout
-router.post('/addFbUser', addFbUser);
-router.get('/getFbUsers', getFbUsers);
-router.get('/getFbUserDetail/:userName', getFbUserDetail);
-router.post('/updateFbUser/:userName', updateFbUser);
-router.delete('/deleteFbUser/:userName', deleteFbUser);
+router.post('/addFbUser', verifyDesgination, addFbUser);
+router.get('/getFbUsers', verifyDesgination, getFbUsers);
+router.get('/getFbUserDetail/:userName', verifyDesgination, getFbUserDetail);
+router.post('/updateFbUser/:userName', verifyDesgination, updateFbUser);
+router.delete('/deleteFbUser/:userName', verifyDesgination, deleteFbUser);
 
 //tl
-router.post('/addCustomer', addCustomer);
-router.get('/getCustomers', getCustomers);
-router.get('/getCustomerDetails/:customerName', getCustomerDetails);
-router.post('/updateCustomer/:customerName', updateCustomer);
-router.delete('/deleteCustomer/:customerName', deleteCustomer);
+router.post('/addCustomer', verifyDesgination, addCustomer);
+router.get('/getCustomers', verifyDesgination, getCustomers);
+router.get('/getCustomerDetails/:customerName', verifyDesgination, getCustomerDetails);
+router.post('/updateCustomer/:customerName', verifyDesgination, updateCustomer);
+router.delete('/deleteCustomer/:customerName', verifyDesgination, deleteCustomer);
 
 //Freshmessage
-router.post('/addFreshMessage', addFreshMessage);
-router.get('/getFreshMessages', getFreshMessages);
-router.get('/getFreshMessageDetails/:agentName', getFreshMessageDetails);
-router.post('/updateFreshMessage/:agentName', updateFreshMessage);
-router.delete('/deleteFreshMessage/:agentName', deleteFreshMessage);
+router.post('/addFreshMessage', verifyDesgination, addFreshMessage);
+router.get('/getFreshMessages', verifyDesgination, getFreshMessages);
+router.get('/getFreshMessageDetails/:agentName', verifyDesgination, getFreshMessageDetails);
+router.post('/updateFreshMessage/:agentName', verifyDesgination, updateFreshMessage);
+router.delete('/deleteFreshMessage/:agentName', verifyDesgination, deleteFreshMessage);
 
 //agent
-router.post('/addAgent/:name', addAgent);
-router.get('/getAgents/:name', getAgents);
-router.get('/getAgentDetails/:name/:agentName', getAgentDetails);
-router.post('/updateAgent/:name/:agentName', updateAgent);
-router.delete('/deleteAgent/:name/:agentName', deleteAgent);
+router.post('/addAgent/:name', verifyDesgination, addAgent);
+router.get('/getAgents/:name', verifyDesgination, getAgents);
+router.get('/getAgentDetails/:name/:agentName', verifyDesgination, getAgentDetails);
+router.post('/updateAgent/:name/:agentName', verifyDesgination, updateAgent);
+router.delete('/deleteAgent/:name/:agentName', verifyDesgination, deleteAgent);
 
 
 
