@@ -8,6 +8,9 @@ const addEmployee = async (req, res) => {
     try {
         const { employeeName, designation, salary, incentive, review } = req.body;
 
+        if (await BalanceSheet.findOne({ employeeName }))
+            return res.status(201).json({ status: false, error: "This employee name is not avaiable" });
+
         const employDetails = await BalanceSheet.create({
             employeeName,
             designation,
@@ -16,18 +19,18 @@ const addEmployee = async (req, res) => {
             review
         });
 
-        return res.status(200).json({ message: "Added successful!", employDetails: employDetails });
+        return res.status(200).json({ status: true, message: "Added successful!", employDetails: employDetails });
     } catch (err) {
-        return res.status(500).json({ error: err });
+        return res.status(500).json({ status: false, error: err });
     }
 }
 
 const getBalanceSheetList = async (req, res) => {
     try {
         const Employees = await BalanceSheet.find();
-        return res.status(200).json({ Employees });
+        return res.status(200).json({ status: true, Employees });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -37,12 +40,12 @@ const getEmployeeDetails = async (req, res) => {
     try {
         const employeeDetails = await BalanceSheet.find({ employeeName });
         if (!employeeDetails) {
-            return res.status(404).json({ error: 'Employee not found' });
+            return res.status(404).json({ status: false, error: 'Employee not found' });
         }
 
-        return res.status(200).json({ employee: employeeDetails });
+        return res.status(200).json({ status: true, employee: employeeDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, rror: err.message });
     }
 }
 
@@ -64,12 +67,12 @@ const updateEmployee = async (req, res) => {
         const updatedEmployee = await BalanceSheet.findOneAndUpdate({ employeeName }, updatedDetails, { new: true });
 
         if (!updatedEmployee) {
-            return res.status(404).json({ error: 'Employee not found' });
+            return res.status(404).json({ status: false, error: 'Employee not found' });
         }
 
-        return res.status(200).json({ message: 'Employee details updated successfully', employee: updatedEmployee });
+        return res.status(200).json({ status: true, message: 'Employee details updated successfully', employee: updatedEmployee });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -80,12 +83,12 @@ const deleteEmployee = async (req, res) => {
         const deletedEmployee = await BalanceSheet.findOneAndDelete({ employeeName });
 
         if (!deletedEmployee) {
-            return res.status(404).json({ error: 'Employee not found' });
+            return res.status(404).json({ status: false, error: 'Employee not found' });
         }
 
-        return res.status(200).json({ message: 'Employee deleted successfully', Employee: deletedEmployee });
+        return res.status(200).json({ status: true, message: 'Employee deleted successfully', Employee: deletedEmployee });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -93,9 +96,9 @@ const deleteEmployee = async (req, res) => {
 const getCoinSheetList = async (req, res) => {
     try {
         const coinLists = await CoinSheet.find();
-        return res.status(200).json({ coinLists });
+        return res.status(200).json({ status: true, coinLists });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -106,7 +109,7 @@ const addToCoinSheet = async (req, res) => {
         const parsedSpend = parseInt(spend);
 
         if (parsedInitialCoins < 0 || parsedSpend > parsedInitialCoins) {
-            return res.status(400).json({ error: 'Invalid request' });
+            return res.status(400).json({ status: false, error: 'Invalid request' });
         }
 
         const coinDetails = await CoinSheet.create({
@@ -114,9 +117,9 @@ const addToCoinSheet = async (req, res) => {
             spend: parsedSpend
         });
 
-        return res.status(200).json({ message: "Added successful!", coinDetails: coinDetails });
+        return res.status(200).json({ status: true, message: "Added successful!", coinDetails: coinDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -126,12 +129,12 @@ const getCoinDetails = async (req, res) => {
     try {
         const coinDetails = await CoinSheet.find({ initialCoins });
         if (!coinDetails) {
-            return res.status(404).json({ error: ' Not found' });
+            return res.status(404).json({ status: false, error: ' Not found' });
         }
 
-        return res.status(200).json({ coinDetails: coinDetails });
+        return res.status(200).json({ status: true, coinDetails: coinDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -170,12 +173,12 @@ const deleteCoinDetails = async (req, res) => {
         const deletedCoins = await CoinSheet.findOneAndDelete({ initialCoins });
 
         if (!deletedCoins) {
-            return res.status(404).json({ error: 'Not found' });
+            return res.status(404).json({ status: false, error: 'Not found' });
         }
 
-        return res.status(200).json({ message: 'Deleted successfully', deletedCoins: deletedCoins });
+        return res.status(200).json({ status: true, message: 'Deleted successfully', deletedCoins: deletedCoins });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -185,7 +188,7 @@ const addFbUser = async (req, res) => {
         const { userName, password, fbLink, status, agentName } = req.body;
 
         if (await FacebookRecord.findOne({ userName }))
-            return res.status(201).json({ error: "This userName is not avaiable" });
+            return res.status(201).json({ status: false, error: "This userName is not avaiable" });
 
         const hashPassword = await bcrypt.hash(password, 10);
 
@@ -196,18 +199,18 @@ const addFbUser = async (req, res) => {
             status,
             agentName
         });
-        return res.status(200).json({ message: "User added successful!", user: user });
+        return res.status(200).json({ status: true, message: "User added successful!", user: user });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
 const getFbUsers = async (req, res) => {
     try {
         const fbUsersList = await FacebookRecord.find();
-        return res.status(200).json({ fbUsersList });
+        return res.status(200).json({ status: true, fbUsersList });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -216,18 +219,17 @@ const getFbUserDetail = async (req, res) => {
     try {
         const fbUserDetails = await FacebookRecord.find({ userName });
         if (!fbUserDetails) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ status: false, error: 'User not found' });
         }
 
-        return res.status(200).json({ userDetails: fbUserDetails });
+        return res.status(200).json({ status: true, userDetails: fbUserDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
 const updateFbUser = async (req, res) => {
     const { userName } = req.params;
-    console.log(userName)
     const { password, fbLink, status, agentName } = req.body;
 
     try {
@@ -244,12 +246,12 @@ const updateFbUser = async (req, res) => {
         const updatedFbUser = await FacebookRecord.findOneAndUpdate({ userName }, updatedUser, { new: true });
 
         if (!updatedFbUser) {
-            return res.status(404).json({ error: 'Fb User not found' });
+            return res.status(404).json({ status: false, error: 'Fb User not found' });
         }
 
-        return res.status(200).json({ message: 'Fb User details updated successfully', updatedUser: updatedFbUser });
+        return res.status(200).json({ status: true,  message: 'Fb User details updated successfully', updatedUser: updatedFbUser });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false,  error: err.message });
     }
 }
 
@@ -260,12 +262,12 @@ const deleteFbUser = async (req, res) => {
         const deletedFbUser = await FacebookRecord.findOneAndDelete({ userName });
 
         if (!deletedFbUser) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ status: false,  error: 'User not found' });
         }
 
-        return res.status(200).json({ message: 'User deleted successfully', user: deletedFbUser });
+        return res.status(200).json({ status: true,  message: 'User deleted successfully', user: deletedFbUser });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false,  error: err.message });
     }
 }
 
