@@ -29,10 +29,10 @@ const register = async (req, res) => {
         const { userName, email, password, designation, activeStatus } = req.body;
 
         if (await User.findOne({ userName }))
-            return res.status(201).json({ error: "This userName is not avaiable" });
+            return res.status(201).json({ status: false, error: "This userName is not avaiable" });
 
         if (await User.findOne({ email }))
-            return res.status(201).json({ error: "This email already registered" });
+            return res.status(201).json({ status: false, error: "This email already registered" });
 
         const hashPassword = await bcrypt.hash(password, 10);
 
@@ -43,9 +43,9 @@ const register = async (req, res) => {
             designation,
             activeStatus,
         });
-        return res.status(200).json({ message: "Registration successful!", user: user });
+        return res.status(200).json({ status: true, message: "Registration successful!", user: user });
     } catch (err) {
-        return res.status(500).json({ error: err });
+        return res.status(500).json({ status: false, error: err });
     }
 }
 
@@ -54,15 +54,15 @@ const login = async (req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        if (!user) { return res.status(201).json({ error: "You are not registered" }); }
+        if (!user) { return res.status(201).json({ status: false, error: "You are not registered" }); }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
         if (!isPasswordCorrect) {
-            return res.status(201).json({ error: "Wrong credentials" });
+            return res.status(201).json({ status: false, error: "Wrong credentials" });
         }
         if (!user.activeStatus) {
-            return res.status(204).json({ error: "Inactive user, Can't login" });
+            return res.status(204).json({ status: false, error: "Inactive user, Can't login" });
         }
 
         const istOffset = 5.5 * 60 * 60 * 1000;
@@ -89,11 +89,13 @@ const login = async (req, res) => {
                 userName: user.userName,
                 designation: user.designation,
             },
+            status: true,
             token: token
+
         });
 
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -105,9 +107,9 @@ const getUsers = async (req, res) => {
             query = { designation };
         }
         const users = await User.find(query);
-        return res.status(200).json({ users });
+        return res.status(200).json({ status: true, users });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -117,12 +119,12 @@ const getUserDetails = async (req, res) => {
     try {
         const UserDetails = await User.find({ userName });
         if (!UserDetails) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ status: false, error: 'User not found' });
         }
 
-        return res.status(200).json({ user: UserDetails });
+        return res.status(200).json({ status: true, user: UserDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -143,12 +145,12 @@ const updateUser = async (req, res) => {
         const updatedUser = await User.findOneAndUpdate({ userName }, updatedDetails, { new: true });
 
         if (!updatedUser) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ status: false, error: 'User not found' });
         }
 
-        return res.status(200).json({ message: 'User details updated successfully', user: updatedUser });
+        return res.status(200).json({ message: 'User details updated successfully', user: updatedUser, status: true });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -159,12 +161,12 @@ const deleteUser = async (req, res) => {
         const deletedUser = await User.findOneAndDelete({ userName });
 
         if (!deletedUser) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ status: false, error: 'User not found' });
         }
 
-        return res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
+        return res.status(200).json({ status: true, message: 'User deleted successfully', user: deletedUser });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 

@@ -5,7 +5,7 @@ const addCustomer = async (req, res) => {
         const { customerName, gameName, amount, accountName, date, remarks } = req.body;
         
         if (await Customer.findOne({ customerName }))
-            return res.status(201).json({ error: "This customer name is not avaiable" });
+            return res.status(201).json({ status: false, error: "This customer name is not avaiable" });
 
         const customer = await Customer.create({
             customerName, 
@@ -16,18 +16,18 @@ const addCustomer = async (req, res) => {
             remarks
         });
 
-        return res.status(200).json({ message: "Customer Added successful!", customer: customer });
+        return res.status(200).json({ status: true, message: "Customer Added successful!", customer: customer });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
 const getCustomers = async (req, res) => {
     try {
         const customers = await Customer.find();
-        return res.status(200).json({ customers });
+        return res.status(200).json({ status: true, customers });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -37,12 +37,12 @@ const getCustomerDetails = async (req, res) => {
     try {
         const customerDetails = await Customer.find({ customerName });
         if (!customerDetails) {
-            return res.status(404).json({ error: 'Customer not found' });
+            return res.status(404).json({ status: false, error: 'Customer not found' });
         }
 
-        return res.status(200).json({ customer: customerDetails });
+        return res.status(200).json({ status: true, customer: customerDetails });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -63,12 +63,12 @@ const updateCustomer = async (req, res) => {
         const updatedCustomer = await Customer.findOneAndUpdate({ customerName }, updatedDetails, { new: true });
 
         if (!updatedCustomer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            return res.status(404).json({ status: false, error: 'Customer not found' });
         }
 
-        return res.status(200).json({ message: 'Customer details updated successfully', customer: updatedCustomer });
+        return res.status(200).json({ status: true, message: 'Customer details updated successfully', customer: updatedCustomer });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -79,12 +79,12 @@ const deleteCustomer = async (req, res) => {
         const deletedCustomer = await Customer.findOneAndDelete({ customerName });
 
         if (!deletedCustomer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            return res.status(404).json({ status: false,  error: 'Customer not found' });
         }
 
-        return res.status(200).json({ message: 'Customer deleted successfully', deletedCustomer: deletedCustomer });
+        return res.status(200).json({ status: true, message: 'Customer deleted successfully', deletedCustomer: deletedCustomer });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
