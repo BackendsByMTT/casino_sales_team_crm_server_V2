@@ -33,7 +33,7 @@ const addEmployee = async (req, res) => {
 const getBalanceSheetList = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -47,7 +47,7 @@ const getBalanceSheetList = async (req, res) => {
 const getEmployeeDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     const { employeeName } = req.params;
@@ -67,7 +67,7 @@ const getEmployeeDetails = async (req, res) => {
 const updateEmployee = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant update' });
 
     const { employeeName } = req.params;
@@ -99,7 +99,7 @@ const updateEmployee = async (req, res) => {
 const deleteEmployee = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { employeeName } = req.params;
@@ -121,7 +121,7 @@ const deleteEmployee = async (req, res) => {
 const getCoinSheetList = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -135,7 +135,7 @@ const getCoinSheetList = async (req, res) => {
 const addToCoinSheet = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -161,7 +161,7 @@ const addToCoinSheet = async (req, res) => {
 const getCoinDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     const { initialCoins } = req.params;
@@ -181,7 +181,7 @@ const getCoinDetails = async (req, res) => {
 const updateCoinDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant update' });
 
     let initialCoins = parseInt(req.params.initialCoins);
@@ -214,7 +214,7 @@ const updateCoinDetails = async (req, res) => {
 const deleteCoinDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { initialCoins } = req.params;
@@ -236,7 +236,7 @@ const deleteCoinDetails = async (req, res) => {
 const addFbUser = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -263,7 +263,7 @@ const addFbUser = async (req, res) => {
 const getFbUsers = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -277,7 +277,7 @@ const getFbUsers = async (req, res) => {
 const getFbUserDetail = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     const { userName } = req.params;
@@ -296,7 +296,7 @@ const getFbUserDetail = async (req, res) => {
 const updateFbUser = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant update' });
 
     const { userName } = req.params;
@@ -328,7 +328,7 @@ const updateFbUser = async (req, res) => {
 const deleteFbUser = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "bb" && desg !== "manager")
+    if (desg !== "BB" && desg !== "Manager")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { userName } = req.params;
