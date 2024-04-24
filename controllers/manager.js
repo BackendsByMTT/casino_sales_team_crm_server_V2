@@ -187,7 +187,7 @@ const updateCoinDetails = async (req, res) => {
     let initialCoins = parseInt(req.params.initialCoins);
     let spend = parseInt(req.body.spend);
     if (initialCoins < 0 || spend > initialCoins) {
-        return res.status(400).json({ error: 'Invalid request' });
+        return res.status(400).json({ status: false, error: 'Invalid request' });
     }
 
     const remaining = initialCoins - spend;
@@ -205,9 +205,9 @@ const updateCoinDetails = async (req, res) => {
             return res.status(404).json({ error: 'Not found' });
         }
 
-        return res.status(200).json({ message: 'Details updated successfully', coinDetails: updatedCoins });
+        return res.status(200).json({ status: true, message: 'Details updated successfully', coinDetails: updatedCoins });
     } catch (err) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
