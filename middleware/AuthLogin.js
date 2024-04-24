@@ -33,6 +33,7 @@ const verifyDesgination = async (req, res, next) => {
         const user = await User.findOne({ userName: decodedToken.userName });
         if (user) {
             req.desg = user.designation;
+            console.log(user.designation)
             next();
         } else {
             return res.status(401).json({ status: false, message: "Invalid Token" });
