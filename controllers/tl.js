@@ -3,7 +3,7 @@ const Customer = require("../models/CustomerSchema")
 const addCustomer = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "agent")
+    if (desg === "Agent")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -30,7 +30,7 @@ const addCustomer = async (req, res) => {
 const getCustomers = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "agent")
+    if (desg === "Agent")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     try {
@@ -44,7 +44,7 @@ const getCustomers = async (req, res) => {
 const getCustomerDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "agent")
+    if (desg === "Agent")
         return res.status(403).json({ status: false, error: 'You don not have access to this' });
 
     const { customerName } = req.params;
@@ -64,7 +64,7 @@ const getCustomerDetails = async (req, res) => {
 const updateCustomer = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "agent")
+    if (desg === "Agent")
         return res.status(403).json({ status: false, error: 'You cant update' });
 
     const { customerName } = req.params;
@@ -95,7 +95,7 @@ const updateCustomer = async (req, res) => {
 const deleteCustomer = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "agent")
+    if (desg === "Agent")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { customerName } = req.params;
