@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { register, login, logout , getUsers, getUserDetails, updateUser, deleteUser, health } = require("../controllers/user");
+const { register, login, logout, getUsers, getUserDetails, updateUser, deleteUser, health } = require("../controllers/user");
 const { addEmployee, getBalanceSheetList, getEmployeeDetails, updateEmployee, deleteEmployee, getCoinSheetList, addToCoinSheet, getCoinDetails, updateCoinDetails, deleteCoinDetails, addFbUser, getFbUsers, getFbUserDetail, updateFbUser, deleteFbUser } = require("../controllers/manager");
 const { verifyTokenAuthLogin, verifyDesgination } = require("../middleware/AuthLogin")
 const { addCustomer, getCustomers, getCustomerDetails, updateCustomer, deleteCustomer } = require("../controllers/tl")
@@ -21,7 +21,7 @@ router.post('/addEmployee', verifyDesgination, addEmployee);
 router.get('/getBalanceSheetList', verifyDesgination, getBalanceSheetList);
 router.get('/getEmployeeDetails/:employeeName', verifyDesgination, getEmployeeDetails);
 router.put('/updateEmployee/:employeeName', verifyDesgination, updateEmployee);
-router.delete('/deleteEmployee/:employeeName', deleteEmployee);
+router.delete('/deleteEmployee/:employeeName', verifyDesgination, deleteEmployee);
 
 
 //coinSheet
