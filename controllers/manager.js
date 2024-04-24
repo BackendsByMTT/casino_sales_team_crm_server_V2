@@ -5,6 +5,11 @@ const bcrypt = require('bcrypt');
 
 //BalanceSheet
 const addEmployee = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const { employeeName, designation, salary, incentive, review } = req.body;
 
@@ -26,6 +31,11 @@ const addEmployee = async (req, res) => {
 }
 
 const getBalanceSheetList = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const Employees = await BalanceSheet.find();
         return res.status(200).json({ status: true, Employees });
@@ -35,6 +45,11 @@ const getBalanceSheetList = async (req, res) => {
 }
 
 const getEmployeeDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const { employeeName } = req.params;
 
     try {
@@ -50,6 +65,11 @@ const getEmployeeDetails = async (req, res) => {
 }
 
 const updateEmployee = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant update' });
+
     const { employeeName } = req.params;
     const { designation, salary, incentive, review } = req.body;
     const totalSalary = salary + incentive;
@@ -77,6 +97,11 @@ const updateEmployee = async (req, res) => {
 }
 
 const deleteEmployee = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { employeeName } = req.params;
 
     try {
@@ -94,6 +119,11 @@ const deleteEmployee = async (req, res) => {
 
 //CoinSheet
 const getCoinSheetList = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const coinLists = await CoinSheet.find();
         return res.status(200).json({ status: true, coinLists });
@@ -103,6 +133,11 @@ const getCoinSheetList = async (req, res) => {
 }
 
 const addToCoinSheet = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const { initialCoins, spend } = req.body;
         const parsedInitialCoins = parseInt(initialCoins);
@@ -124,6 +159,11 @@ const addToCoinSheet = async (req, res) => {
 }
 
 const getCoinDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const { initialCoins } = req.params;
 
     try {
@@ -139,6 +179,11 @@ const getCoinDetails = async (req, res) => {
 }
 
 const updateCoinDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant update' });
+
     let initialCoins = parseInt(req.params.initialCoins);
     let spend = parseInt(req.body.spend);
     if (initialCoins < 0 || spend > initialCoins) {
@@ -167,6 +212,11 @@ const updateCoinDetails = async (req, res) => {
 }
 
 const deleteCoinDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { initialCoins } = req.params;
 
     try {
@@ -184,6 +234,11 @@ const deleteCoinDetails = async (req, res) => {
 
 //Fb Accounts Records
 const addFbUser = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const { userName, password, fbLink, status, agentName } = req.body;
 
@@ -206,6 +261,11 @@ const addFbUser = async (req, res) => {
 }
 
 const getFbUsers = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const fbUsersList = await FacebookRecord.find();
         return res.status(200).json({ status: true, fbUsersList });
@@ -215,6 +275,11 @@ const getFbUsers = async (req, res) => {
 }
 
 const getFbUserDetail = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const { userName } = req.params;
     try {
         const fbUserDetails = await FacebookRecord.find({ userName });
@@ -229,6 +294,11 @@ const getFbUserDetail = async (req, res) => {
 }
 
 const updateFbUser = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant update' });
+
     const { userName } = req.params;
     const { password, fbLink, status, agentName } = req.body;
 
@@ -249,25 +319,30 @@ const updateFbUser = async (req, res) => {
             return res.status(404).json({ status: false, error: 'Fb User not found' });
         }
 
-        return res.status(200).json({ status: true,  message: 'Fb User details updated successfully', updatedUser: updatedFbUser });
+        return res.status(200).json({ status: true, message: 'Fb User details updated successfully', updatedUser: updatedFbUser });
     } catch (err) {
-        return res.status(500).json({ status: false,  error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
 const deleteFbUser = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb" && desg !== "manager")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { userName } = req.params;
 
     try {
         const deletedFbUser = await FacebookRecord.findOneAndDelete({ userName });
 
         if (!deletedFbUser) {
-            return res.status(404).json({ status: false,  error: 'User not found' });
+            return res.status(404).json({ status: false, error: 'User not found' });
         }
 
-        return res.status(200).json({ status: true,  message: 'User deleted successfully', user: deletedFbUser });
+        return res.status(200).json({ status: true, message: 'User deleted successfully', user: deletedFbUser });
     } catch (err) {
-        return res.status(500).json({ status: false,  error: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 

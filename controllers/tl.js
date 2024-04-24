@@ -1,18 +1,23 @@
 const Customer = require("../models/CustomerSchema")
 
 const addCustomer = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const { customerName, gameName, amount, accountName, date, remarks } = req.body;
-        
+
         if (await Customer.findOne({ customerName }))
             return res.status(201).json({ status: false, error: "This customer name is not avaiable" });
 
         const customer = await Customer.create({
-            customerName, 
-            gameName, 
-            amount, 
-            accountName, 
-            date, 
+            customerName,
+            gameName,
+            amount,
+            accountName,
+            date,
             remarks
         });
 
@@ -23,6 +28,11 @@ const addCustomer = async (req, res) => {
 }
 
 const getCustomers = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     try {
         const customers = await Customer.find();
         return res.status(200).json({ status: true, customers });
@@ -32,6 +42,11 @@ const getCustomers = async (req, res) => {
 }
 
 const getCustomerDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const { customerName } = req.params;
 
     try {
@@ -47,16 +62,21 @@ const getCustomerDetails = async (req, res) => {
 }
 
 const updateCustomer = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You cant update' });
+
     const { customerName } = req.params;
     const { gameName, amount, accountName, date, remarks } = req.body;
 
     try {
         const updatedDetails = {
             customerName,
-            gameName, 
-            amount, 
-            accountName, 
-            date, 
+            gameName,
+            amount,
+            accountName,
+            date,
             remarks
         }
 
@@ -73,13 +93,18 @@ const updateCustomer = async (req, res) => {
 }
 
 const deleteCustomer = async (req, res) => {
+    const { desg } = req;
+
+    if (desg === "agent")
+        return res.status(403).json({ status: false, error: 'You cant delete' });
+
     const { customerName } = req.params;
 
     try {
         const deletedCustomer = await Customer.findOneAndDelete({ customerName });
 
         if (!deletedCustomer) {
-            return res.status(404).json({ status: false,  error: 'Customer not found' });
+            return res.status(404).json({ status: false, error: 'Customer not found' });
         }
 
         return res.status(200).json({ status: true, message: 'Customer deleted successfully', deletedCustomer: deletedCustomer });

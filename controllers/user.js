@@ -2,22 +2,6 @@ const User = require("../models/userSchema")
 var jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
-const setCookie = (res, data) => {
-    res.cookie('token', data, {
-        maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
-        withCredentials: true,
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none',
-    });
-};
-
-const test = async (req, res) => {
-    return res.status(200).json({
-        message: "Login successful"
-    });
-}
-
 const health = async (req, res) => {
     return res.status(200).json({
         message: "server is running"
@@ -81,7 +65,7 @@ const login = async (req, res) => {
             process.env.JWT_SECRET_KEY
         );
 
-        setCookie(res, { token: token });
+        res.setHeader('Authorization', `Bearer ${token}`);
 
         return res.status(200).json({
             message: "Login successful",
@@ -100,6 +84,11 @@ const login = async (req, res) => {
 }
 
 const getUsers = async (req, res) => {
+    const { desg } = req;
+    console.log(desg);
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const designation = req.query.designation;
     try {
         let query = {};
@@ -114,11 +103,16 @@ const getUsers = async (req, res) => {
 }
 
 const getUserDetails = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+
     const { userName } = req.params;
 
     try {
         const UserDetails = await User.find({ userName });
-        if (!UserDetails) {
+        if (UserDetails.length === 0) {
             return res.status(404).json({ status: false, error: 'User not found' });
         }
 
@@ -129,6 +123,11 @@ const getUserDetails = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You can not update the user' });
+
     const { userName } = req.params;
     const { email, password, designation, activeStatus } = req.body;
 
@@ -155,6 +154,11 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
+    const { desg } = req;
+
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You can not delete the user' });
+
     const { userName } = req.params;
 
     try {
@@ -170,5 +174,23 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    const { userName } = req.body;
+    try {
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istDate = new Date(Date.now() + istOffset);
+        const updatedUserLogoutTime = await User.findOneAndUpdate(
+            { userName },
+            { lastLogout: istDate.toISOString() }
+        );
+        if (!updatedUserLogoutTime) {
+            return res.status(404).json({ status: false, error: 'User not found' });
+        }
+        return res.status(200).json({ status: true, message: 'updated lastlogout' });
 
-module.exports = { register, login, test, getUsers, getUserDetails, updateUser, deleteUser, health };
+    } catch (err) {
+        return res.status(500).json({ status: false, error: err.message });
+    }
+}
+
+module.exports = { register, login, getUsers, getUserDetails, updateUser, deleteUser, logout, health };
