@@ -86,8 +86,8 @@ const login = async (req, res) => {
 const getUsers = async (req, res) => {
     const { desg } = req;
     console.log(desg);
-    if (desg !== "BB")
-        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You do not have access to this' });
 
     const designation = req.query.designation;
     try {
@@ -105,8 +105,8 @@ const getUsers = async (req, res) => {
 const getUserDetails = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "BB")
-        return res.status(403).json({ status: false, error: 'You don not have access to this' });
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You do not have access to this' });
 
     const { userName } = req.params;
 
@@ -125,8 +125,8 @@ const getUserDetails = async (req, res) => {
 const updateUser = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "BB")
-        return res.status(403).json({ status: false, error: 'You can not update the user' });
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You cant update the user' });
 
     const { userName } = req.params;
     const { email, password, designation, activeStatus } = req.body;
@@ -156,8 +156,8 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { desg } = req;
 
-    if (desg !== "BB")
-        return res.status(403).json({ status: false, error: 'You can not delete the user' });
+    if (desg !== "bb")
+        return res.status(403).json({ status: false, error: 'You cant delete the user' });
 
     const { userName } = req.params;
 

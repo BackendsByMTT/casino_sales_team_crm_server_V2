@@ -4,7 +4,6 @@ const User = require("../models/userSchema");
 const verifyTokenAuthLogin = async (req, res, next) => {
     try {
         const token = req.headers?.authorization?.split(" ")[1]
-        console.log(token);
         if (!token) {
             return res.status(401).json({ status: false, message: "Authorization token is missing." });
         }
@@ -24,7 +23,6 @@ const verifyTokenAuthLogin = async (req, res, next) => {
 const verifyDesgination = async (req, res, next) => {
     try {
         const token = req.headers?.authorization?.split(" ")[1]
-        console.log(token);
         if (!token) {
             return res.status(401).json({ status: false, message: "Authorization token is missing." });
         }
@@ -32,8 +30,7 @@ const verifyDesgination = async (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const user = await User.findOne({ userName: decodedToken.userName });
         if (user) {
-            req.desg = user.designation;
-            console.log(user.designation)
+            req.desg = user.designation.toLowerCase();
             next();
         } else {
             return res.status(401).json({ status: false, message: "Invalid Token" });
