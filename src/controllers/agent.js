@@ -77,7 +77,7 @@ const updateFreshMessage = async (req, res) => {
 const deleteFreshMessage = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "Agent")
+    if (desg === "agent")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { agentName } = req.params;
@@ -193,7 +193,7 @@ const updateAgent = async (req, res) => {
 const deleteAgent = async (req, res) => {
     const { desg } = req;
 
-    if (desg === "Agent")
+    if (desg === "agent")
         return res.status(403).json({ status: false, error: 'You cant delete' });
 
     const { name, agentName } = req.params;
