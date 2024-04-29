@@ -26,7 +26,7 @@ const addEmployee = async (req, res) => {
 
         return res.status(200).json({ status: true, message: "Added successful!", employDetails: employDetails });
     } catch (err) {
-        return res.status(500).json({ status: false, error: err });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 
@@ -54,13 +54,13 @@ const getEmployeeDetails = async (req, res) => {
 
     try {
         const employeeDetails = await BalanceSheet.find({ employeeName });
-        if (!employeeDetails) {
+        if (employeeDetails.length === 0) {
             return res.status(404).json({ status: false, error: 'Employee not found' });
         }
 
         return res.status(200).json({ status: true, employee: employeeDetails });
     } catch (err) {
-        return res.status(500).json({ status: false, rror: err.message });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 

@@ -17,6 +17,8 @@ const register = async (req, res) => {
 
         if (await User.findOne({ email }))
             return res.status(201).json({ status: false, error: "This email already registered" });
+        if (password.length < 6)
+            return res.status(400).json({ status: false, error: "Password must be at least 6 characters long" });
 
         const hashPassword = await bcrypt.hash(password, 10);
 
@@ -29,7 +31,7 @@ const register = async (req, res) => {
         });
         return res.status(200).json({ status: true, message: "Registration successful!", user: user });
     } catch (err) {
-        return res.status(500).json({ status: false, error: err });
+        return res.status(500).json({ status: false, error: err.message });
     }
 }
 

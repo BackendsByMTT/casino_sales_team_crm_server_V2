@@ -4,7 +4,8 @@ const { addEmployee, getBalanceSheetList, getEmployeeDetails, updateEmployee, de
 const { verifyTokenAuthLogin, verifyDesgination } = require("../middleware/AuthLogin")
 const { addCustomer, getCustomers, getCustomerDetails, updateCustomer, deleteCustomer } = require("../controllers/tl")
 const { addFreshMessage, getFreshMessages, getFreshMessageDetails, updateFreshMessage, deleteFreshMessage, addAgent, getAgents, getAgentDetails, updateAgent, deleteAgent } = require("../controllers/agent")
-
+const { addFirstDepositByAgent, getFirstDepositsByAgent, getFirstDepositByAgent, updateFirstDepositByAgent, deleteFirstDepositByAgent } = require("../controllers/firstDepositByAgent");
+const { addFirstDepositByTlAndManager, getFirstDepositsByTlAndManager, getFirstDepositByTlAndManager, updateFirstDepositByTlAndManager, deleteFirstDepositByTlAndManager } = require("../controllers/firstDepositByTlAndManager");
 
 //user
 router.post('/register', register);
@@ -58,6 +59,21 @@ router.get('/getAgents/:name', verifyTokenAuthLogin, getAgents);
 router.get('/getAgentDetails/:name/:agentName', verifyTokenAuthLogin, getAgentDetails);
 router.put('/updateAgent/:name/:agentName', verifyTokenAuthLogin, updateAgent);
 router.delete('/deleteAgent/:name/:agentName', verifyDesgination, deleteAgent);
+
+//FirstDepositByAgent
+router.post('/addFirstDepositByAgent', verifyDesgination, addFirstDepositByAgent);
+router.get('/getFirstDepositsByAgent', verifyTokenAuthLogin, getFirstDepositsByAgent);
+router.get('/getFirstDepositByAgent/:cashIn', verifyTokenAuthLogin, getFirstDepositByAgent);
+router.put('/updateFirstDepositByAgent/:cashIn', verifyDesgination, updateFirstDepositByAgent);
+router.delete('/deleteFirstDepositByAgent/:cashIn', verifyDesgination, deleteFirstDepositByAgent);
+
+// //CashinCashOut for Tl and Manager
+router.post('/addFirstDepositByTlAndManager', verifyDesgination, addFirstDepositByTlAndManager);
+router.get('/getFirstDepositsByTlAndManager', verifyDesgination, getFirstDepositsByTlAndManager);
+router.get('/getFirstDepositByTlAndManager/:customerName', verifyDesgination, getFirstDepositByTlAndManager);
+router.put('/updateFirstDepositByTlAndManager/:customerName', verifyDesgination, updateFirstDepositByTlAndManager);
+router.delete('/deleteFirstDepositByTlAndManager/:customerName', verifyDesgination, deleteFirstDepositByTlAndManager);
+
 
 
 
